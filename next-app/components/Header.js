@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Uploader } from 'uploader'
 import Modal from 'react-modal'
+import {ConnectButton} from "@rainbow-me/rainbowkit";
 
 import SearchBar from './SearchBar'
 import UploadModal from './UploadModal'
@@ -66,6 +67,7 @@ const Header = () => {
             size={22}
             onClick={openUploader}
           />
+          <ConnectButton />
         </div>
       </div>
 
