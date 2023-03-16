@@ -1,23 +1,43 @@
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Uploader } from 'uploader'
-import Modal from 'react-modal'
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Uploader } from "uploader";
+import { UploadDropzone } from "react-uploader";
+import Modal from "react-modal";
 
-import SearchBar from './SearchBar'
-import UploadModal from './UploadModal'
+import SearchBar from "./SearchBar";
+import UploadModal from "./UploadModal";
 
-import { modalStyles } from '../utils/constants'
+import { modalStyles } from "../utils/constants";
 
-import InstagramLogo from '../static/images/logo.png'
-import { GrHomeRounded } from 'react-icons/gr'
-import { AiOutlineCloudUpload } from 'react-icons/ai'
-import { IoPaperPlaneOutline } from 'react-icons/io5'
+import InstagramLogo from "../static/images/logo.png";
+import { GrHomeRounded } from "react-icons/gr";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
-Modal.setAppElement('#__next')
+Modal.setAppElement("#__next");
 
 const uploader = new Uploader({
-  apiKey: 'free',
-})
+  apiKey: "public_kW15b8eFsgxw9yiamkzK9CfB8Adr",
+});
+
+const uploaderOptions = {
+  multi: true,
+  path: {
+    folder: "/"
+  },
+
+  // Comment out this line & use 'onUpdate' instead of
+  // 'onComplete' to have the dropzone close after upload.
+  showFinishButton: true,
+
+  styles: {
+    colors: {
+      primary: "#377dff",
+    },
+  },
+};
 
 const style = {
   wrapper: `navigation fixed z-20 top-0`,
@@ -26,33 +46,35 @@ const style = {
   image: `object-contain`,
   headerMain: `header-icons flex ml-auto items-center`,
   headerIcon: `mr-[.8rem] cursor-pointer`,
-}
+};
 
 const Header = () => {
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const openUploader = () => {
-    {
-      uploader
-        .open({ multi: false })
-        .then(files => {
-          if (files.length === 0) {
-            alert('No files selected.')
-          } else {
-            router.push(`/?image=${files[0].fileUrl}`)
-          }
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-  }
+    setIsOpen(true);
+    // {
+    //   uploader
+    //     .onUpdate({ maxFileCount: 1 })
+    //     .then((files) => {
+    //       if (files.length === 0) {
+    //         alert("No files selected.");
+    //       } else {
+    //         router.push(`/?image=${files[0].fileUrl}`);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
+  };
 
   return (
     <nav className={style.wrapper}>
       <div className={style.headerContainer}>
         <div className={style.logoContainer}>
-          <Image src={InstagramLogo} className={style.image} layout='fill' />
+          <Image src={InstagramLogo} className={style.image} layout="fill" />
         </div>
 
         <SearchBar />
@@ -66,18 +88,26 @@ const Header = () => {
             size={22}
             onClick={openUploader}
           />
+
+          <ConnectButton />
         </div>
       </div>
 
       <Modal
-        isOpen={!!router.query.image}
-        onRequestClose={() => router.push('/')}
+        isOpen={isOpen}
+        onRequestClose={() => router.push("/")}
         style={modalStyles}
       >
-        <UploadModal />
+        <UploadDropzone
+          uploader={uploader}
+          options={uploaderOptions}
+          onComplete={(files) => alert(files.map((x) => x.fileUrl).join("\n"))}
+          width="600px"
+          height="375px"
+        />
       </Modal>
     </nav>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
