@@ -8,7 +8,7 @@ const style = {
 const Caption = ({ data }) => {
   return (
     <div className={style.wrapper}>
-      <DisplayName username={data.author} />
+      <DisplayName username={data.username} />
       <span className={style.caption}>{data.caption || ''}</span>
     </div>
   )

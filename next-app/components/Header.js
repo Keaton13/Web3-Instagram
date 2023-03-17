@@ -25,7 +25,7 @@ const uploader = new Uploader({
 const uploaderOptions = {
   multi: true,
   path: {
-    folder: "/"
+    folder: "/",
   },
 
   // Comment out this line & use 'onUpdate' instead of
@@ -50,10 +50,14 @@ const style = {
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [uploadModalStatus, setUploadModalStatus] = useState(false);
+  const [modalDescriptionStatus, setModalDescriptionStatus] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
   const router = useRouter();
 
   const openUploader = () => {
     setIsOpen(true);
+    setUploadModalStatus(true);
     // {
     //   uploader
     //     .onUpdate({ maxFileCount: 1 })
@@ -98,13 +102,22 @@ const Header = () => {
         onRequestClose={() => router.push("/")}
         style={modalStyles}
       >
-        <UploadDropzone
-          uploader={uploader}
-          options={uploaderOptions}
-          onComplete={(files) => alert(files.map((x) => x.fileUrl).join("\n"))}
-          width="600px"
-          height="375px"
-        />
+        {uploadModalStatus && (
+          <UploadDropzone
+            uploader={uploader}
+            options={uploaderOptions}
+            onComplete={(files) => {
+              alert(files.map((x) => x.fileUrl).join("\n"));
+              setImgUrl(files[0].fileUrl)
+              setUploadModalStatus(false)
+              setModalDescriptionStatus(true);
+            }}
+            width="600px"
+            height="375px"
+          />
+        )}
+
+          {modalDescriptionStatus && <UploadModal imgUrl={imgUrl} setIsOpen={setIsOpen}/>}
       </Modal>
     </nav>
   );

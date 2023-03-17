@@ -2,7 +2,7 @@ import ContractABI from './Instagram.json'
 import Web3 from 'web3'
 
 // export const address = '0x9E1C293b3d63C46B6C3414093d3b739Ea8032798' // Goerli
-export const address = '0xeB085Cb3b1DBAbE15A30a26c98eC574D955881A6' // Ganache
+export const address = '0x8791FDF6076c00847Dd1bB703898b7557ce4E8b0' // Ganache
 
 
 export const createContract = () => {
@@ -10,7 +10,7 @@ export const createContract = () => {
 
   if (ethereum) {
     const web3 = new Web3(ethereum)
-    
+
     return new web3.eth.Contract(ContractABI.abi, address)
   }
 }

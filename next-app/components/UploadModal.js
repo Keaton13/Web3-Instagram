@@ -11,7 +11,7 @@ const style = {
   button: `flex bg-[#3898ff] text-white font-bold items-center justify-center flex-1 mt-[5rem] rounded-[1rem]`,
 }
 
-const UploadModal = () => {
+const UploadModal = (props) => {
   const router = useRouter()
   const [description, setDescription] = useState('')
 
@@ -19,12 +19,12 @@ const UploadModal = () => {
 
   const handleSubmit = async (
     event,
-    imgUrl = router.query.image,
     caption = description,
   ) => {
     event.preventDefault()
 
-    uploadImage(imgUrl, caption)
+    uploadImage(props.imgUrl, caption)
+    props.setIsOpen(false);
 
     router.push('/')
   }
