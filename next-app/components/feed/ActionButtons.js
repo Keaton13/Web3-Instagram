@@ -1,3 +1,5 @@
+import { useAppContext } from '../../context/context'
+
 import { AiOutlineHeart } from 'react-icons/ai'
 import { FaRegComment } from 'react-icons/fa'
 import { IoPaperPlaneOutline } from 'react-icons/io5'
@@ -10,7 +12,7 @@ const style = {
 }
 
 const ActionButtons = ({ id }) => {
-  const tipOwner = () => {}
+  const { tipOwner } = useAppContext()
 
   return (
     <div className={style.wrapper}>
